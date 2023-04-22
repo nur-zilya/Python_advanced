@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 count = 0
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-BOOK_FILE = os.path.join(BASE_DIR, 'war_and_peace.txt')
+BOOK_FILE = os.path.join(BASE_DIR, '../Linux_base/text/war_and_peace.txt')
 
 
 @app.route('/hello_world')
