@@ -1,35 +1,26 @@
 import unittest
-
-from CI_basics.previous_hw.cipher import decode
+from unittest.mock import patch
+from CI_basics.previous_hw import cipher
 
 class TestDecode(unittest.TestCase):
+    @patch('builtins.input', side_effect=['абра-кадабра.'])
+    def test_decode(self, mock_input):
+        test_cases = [
+            ('абра-кадабра.', 'абра-кадабра'),
+            ('абраа..-кадабра', 'абра-кадабра'),
+            ('абраа..-.кадабра', 'абра-кадабра'),
+            ('абра--..кадабра', 'абра-кадабра'),
+            ('абрау...-кадабра', 'абра-кадабра'),
+            ('абра........', ''),
+            ('абр......a.', 'a'),
+            ('1..2.3', '23'),
+            ('.', ''),
+            ('1.......................', ''),
+        ]
 
-    def test_decode_abracadabra(self):
-        self.assertEqual(decode("абра-кадабра."), "абра-кадабра")
+        for cipher, expected in test_cases:
+            with self.subTest(cipher=cipher, expected=expected):
+                self.assertEqual(cipher.decode(cipher), expected)
 
-    def test_decode_abra_dots_hyphen(self):
-        self.assertEqual(decode("абраа..-кадабра"), "абра-кадабра")
-
-    def test_decode_abra_dots_hyphen_dot(self):
-        self.assertEqual(decode("абраа..-.кадабра"), "абра-кадабра")
-
-    def test_decode_abra_hyphens_dots(self):
-        self.assertEqual(decode("абра--..кадабра"), "абра-кадабра")
-
-    def test_decode_abrau_dots_hyphen(self):
-        self.assertEqual(decode("абрау...-кадабра"), "абра-кадабра")
-
-    def test_decode_only_dots(self):
-        self.assertEqual(decode("........"), "")
-
-    def test_decode_dots_and_letter(self):
-        self.assertEqual(decode("абр......a."), "a")
-
-    def test_decode_numbers(self):
-        self.assertEqual(decode("1..2.3"), "23")
-
-    def test_decode_only_dot(self):
-        self.assertEqual(decode("."), "")
-
-    def test_decode_only_ones_and_dots(self):
-        self.assertEqual(decode("1......................."), "")
+if __name__ == "__main__":
+    unittest.main()

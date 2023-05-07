@@ -1,8 +1,3 @@
-import sys
-
-cipher = sys.argv[1]
-
-
 def decode(cipher):
     if not cipher:
         return ""
@@ -19,5 +14,3 @@ def decode(cipher):
             i += 1
     return res
 
-if __name__ == "__main__":
-    print(decode(cipher))
