@@ -11,3 +11,6 @@ def return_ip():
     result = subprocess.run(args, stdout=subprocess.PIPE)
     output = result.stdout.decode('utf-8')
     return output
+
+if __name__ == "__main__":
+    app.run()
