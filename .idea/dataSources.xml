@@ -49,5 +49,17 @@
         </library>
       </libraries>
     </data-source>
+    <data-source source="LOCAL" name="practise" uuid="f3d7498e-a3a1-4bed-b92c-6830f185e6c2">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\79178\Desktop\Python_Advanced\module_13_db2\practise.db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.39.2/sqlite-jdbc-3.39.2.jar</url>
+        </library>
+      </libraries>
+    </data-source>
   </component>
 </project>
