@@ -15,5 +15,6 @@ def add_from_csv_to_db(cur, filename):
 if __name__ == "__main__":
     with sqlite3.connect('practise.db') as conn:
         cur = conn.cursor()
+        cur.executescript(create_table)
         add_from_csv_to_db(cur, 'book_list.csv')
         cur.connection.commit()

@@ -31,7 +31,6 @@ class Philosopher(threading.Thread):
         time.sleep(random.randint(1, 10))
         logger.info(f'Philosopher {self.getName()} finishes eating and leaves to think')
 
-
 def main():
     forks = [threading.Lock() for _ in range(5)]
     philosophers = [Philosopher(forks[i % 5], forks[(i + 1) % 5]) for i in range(5)]
