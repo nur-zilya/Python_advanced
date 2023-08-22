@@ -1,0 +1,41 @@
+<! DOCTYPE html>
+<html>
+    <head>
+        <title>
+            BOOKS
+        </title>
+        <link rel="stylesheet" type="text/css" href="../static/style.css">
+    </head>
+    <body>
+        <h1>Books:</h1>
+        {% if books %}
+        <table class="customTable">
+            <thead>
+                <tr>
+                    <th>ID</td>
+                    <th>Title</td>
+                    <th>Author</td>
+                </tr>
+                </thead>
+                <body>
+                {% for book in books %}
+                <tr>
+                    <td>
+                        {{ book.id }}
+                    </td>
+                    <td>
+                         {{ book.title }}
+                    </td>
+                    <td>
+                        {{ book.author }}
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        {% else %}
+        <h2> Sorry, no books in DB. </h2>
+        {% endif %}
+    </body>
+</html>

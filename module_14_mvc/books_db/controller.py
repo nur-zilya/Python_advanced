@@ -1,7 +1,7 @@
 from typing import List, Dict
 
 from models import get_all_books, get_all_books_of_author, count_books
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -13,7 +13,7 @@ BOOKS = [
 
 def get_html_table_for_books(books: List[Dict]) -> str:
     table = """
-        <table>
+        <table class="customTable">
             <thead>
                 <tr>
                     <th>ID</td>
@@ -35,16 +35,7 @@ def get_html_table_for_books(books: List[Dict]) -> str:
 
 @app.route('/books')
 def all_books() -> str:
-    return """
-        <html>
-            <head>
-            </head>
-            <body>
-                <h1>Total books {total_num}</h1>
-                {table}
-            </body>
-            </html>
-    """.format(total_num=count_books(), table=get_html_table_for_books(get_all_books()))
+    return render_template("index.html", books=get_all_books())
 
 @app.route('/author/<author>')
 def all_books_of_author(author) ->str:
