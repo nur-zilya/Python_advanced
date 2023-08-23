@@ -57,20 +57,15 @@ def count_books():
         num = cursor.fetchone()
         return num[0]
 
-def add_new_book(record):
+def add_new_book(book):
     with sqlite3.connect('table_books.db') as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            "SELECT record['title'] FROM sqlite_master "
-            "WHERE author=record['author'];"
-        )
-        exist = cursor.fetchone()
-        if not exist:
-            cursor.execute(
-                "INSERT INTO `table_books`"
-                "(title, author) VALUES(?,?)",
-                record['title'], record['author']
-            )
+        cursor: sqlite3.Cursor = conn.cursor()
+        query = f"""
+                INSERT INTO table_books (title, author) VALUES 
+                (?, ?)
+                    """
+        cursor.execute(query, (book.title, book.author))
+
 
 
 if __name__ == '__main__':
