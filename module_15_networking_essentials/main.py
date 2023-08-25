@@ -38,9 +38,6 @@ def add_room() -> Response:
         add_room_to_db(room)
         return Response(status=200)
 
-@app.route('/booking', methods=['GET', 'POST'])
-def book_room:
-    if
 
 if __name__ == '__main__':
     init_db()
