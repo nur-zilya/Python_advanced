@@ -7,7 +7,7 @@ class Room:
         self.id = id
         self.floor = floor
         self.beds = beds
-        self.guestNum = guestsNum
+        self.guestsNum = guestsNum
         self.price = price
 
     def __getitem__(self, item):
@@ -24,29 +24,45 @@ class Order:
         self.roomId = roomId
 
 
-def get_rooms():
 
-
-def init_db(initial_records: List):
+def init_db():
     with sqlite3.connect('table_rooms.db') as conn:
         cursor = conn.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS `table_rooms` (
-            id PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             floor INTEGER,
             beds INTEGER,
-            guestNum INTEGER,
+            guestsNum INTEGER,
             price FLOAT
             );
         """)
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS `table_orsers` (
-            id PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             checkIn DATETIME,
             checkOut DATETIME,
             firstName VARCHAR(255),
             surname VARCHAR(255),
-            roomId INTEGER
+            roomId INTEGER,
             FOREIGN KEY (roomId) REFERENCES table_rooms(id)            
             );
         """)
+
+
+def get_rooms():
+    with sqlite3.connect('table_rooms.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT * FROM `table_rooms`
+        """)
+        return [Room(*row) for row in cursor.fetchall()]
+
+def add_room_to_db(room: Room):
+    with sqlite3.connect('table_rooms.db') as conn:
+        cursor = conn.cursor()
+        query = f"""
+            INSERT INTO `table_rooms` (floor, beds, guestNum, price) VALUES (?, ?, ?, ?)
+        """
+        cursor.execute(query, (room.floor, room.beds, room.guestsNum, room.price))
+        conn.commit()
