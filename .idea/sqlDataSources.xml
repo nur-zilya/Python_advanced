@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDataSourceStorage">
+    <option name="dataSources">
+      <list>
+        <State>
+          <option name="id" value="6a421d24-b2f4-4c77-a7f1-736684b60e20" />
+          <option name="name" value="uefa" />
+          <option name="urls">
+            <array>
+              <option value="file://$PROJECT_DIR$/module_13_db2/uefa.db" />
+            </array>
+          </option>
+        </State>
+      </list>
+    </option>
+  </component>
+</project>
