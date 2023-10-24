@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="fdd4a49e-2c1b-472c-91d6-c0b0cb43a0e1" name="database Mapping">
+      <data-sources db="d9cd1a9c-06c1-4d0d-8b8d-274a058db661" />
+      <scope>
+        <node kind="database" negative="1" />
+      </scope>
+    </mapping>
+  </component>
   <component name="SqlDataSourceStorage">
     <option name="dataSources">
       <list>
         <State>
           <option name="id" value="6a421d24-b2f4-4c77-a7f1-736684b60e20" />
           <option name="name" value="uefa" />
+          <option name="dbmsName" value="UNKNOWN" />
           <option name="urls">
             <array>
               <option value="file://$PROJECT_DIR$/module_13_db2/uefa.db" />
