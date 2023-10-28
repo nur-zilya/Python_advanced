@@ -1,4 +1,4 @@
-FROM test_app
+FROM python:3.7.9-slim-stretch
 
 RUN mkdir /app
 
@@ -10,4 +10,4 @@ COPY my_app.py /app/
 
 WORKDIR /app
 
-ENTRYPOINT ["python", "my_app.py"]
+ENTRYPOINT ["python3", "my_app.py"]
