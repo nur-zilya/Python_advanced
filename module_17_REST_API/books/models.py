@@ -18,6 +18,14 @@ class Book:
     def __getitem__(self, item):
         return getattr(self, item)
 
+
+@dataclass
+class Author:
+    first_name: str
+    last_name: str
+    middle_name: Optional[str] = None
+    id: Optional[int] = None
+
 def init_db(initial_records: List[dict]):
     with sqlite3.connect('table_books.db') as conn:
         cursor = conn.cursor()
@@ -82,6 +90,15 @@ def get_book_by_id(book_id: int) -> Optional[Book]:
     with sqlite3.connect('table_books.db') as conn:
         cursor: sqlite3.Cursor = conn.cursor()
         cursor.execute(f'SELECT * FROM table_books WHERE id = "%s"' % book_id)
+        book = cursor.fetchone()
+        if book:
+            return _get_book_obj_from_row(book)
+
+
+def get_book_by_title(book_title: str) -> Optional[Book]:
+    with sqlite3.connect('table_books.db') as conn:
+        cursor: sqlite3.Cursor = conn.cursor()
+        cursor.execute(f'SELECT * FROM table_books WHERE title = "%s"' % book_title)
         book = cursor.fetchone()
         if book:
             return _get_book_obj_from_row(book)
