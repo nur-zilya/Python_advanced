@@ -40,7 +40,7 @@ def init_db(initial_records: List[dict]):
                 'CREATE TABLE `table_authors` '
                 '(id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT, last_name TEXT, middle_name TEXT);'
                 'CREATE TABLE `table_books` '
-                '(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, author_id INTEGER, FOREIGN KEY (author_id) REFERENCES table_authors(id));'
+                '(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, author_id INTEGER, FOREIGN KEY (author_id) REFERENCES table_authors(id) ON DELETE CASCADE);'
             )
 
             cursor.executemany(
@@ -62,12 +62,12 @@ def get_all_books() -> List[Book]:
         return [_get_book_obj_from_row(row) for row in all_books]
 
 
-def get_all_books_of_author(author) -> List[Book]:
-    with sqlite3.connect('table_books.db') as conn:
-        cursor = conn.cursor()
-        cursor.execute('SELECT * FROM `table_books` WHERE author_id=?', (author_id,))
-        all_books = cursor.fetchall()
-        return [Book(*row) for row in all_books]
+# def get_all_books_of_author(author) -> List[Book]:
+#     with sqlite3.connect('table_books.db') as conn:
+#         cursor = conn.cursor()
+#         cursor.execute('SELECT * FROM `table_books` WHERE author_id=?', (author_id,))
+#         all_books = cursor.fetchall()
+#         return [Book(*row) for row in all_books]
 
 
 def count_books():
@@ -117,11 +117,9 @@ def update_book_by_id(book: Book) -> None:
             SET title = ?, author_id = ?
             WHERE id = ?
             """,
-            (book.title, book.author_id, book.id)
+            (book.title, book.author_idа, book.id)
         )
         conn.commit()
-
-
 
 
 def delete_book_by_id(book: Book):
@@ -133,4 +131,28 @@ def delete_book_by_id(book: Book):
         """, (book.id,))
         conn.commit()
 
+def add_new_author(author: Author):
+    with sqlite3.connect('table_books.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute(f"""
+        INSERT INTO table_authors (id, first_name, last_name, middle_name) VALUES
+        (?,?)""", (author.id, author.first_name, author.last_name, author.middle_name))
+        conn.commit()
+        return author
 
+def get_all_books_author(id: int) -> List[Book]:
+    with sqlite3.connect('table_books.db') as conn:
+        cursor: sqlite3.Cursor = conn.cursor()
+        cursor.execute('SELECT * FROM table_authors WHERE id = ?', (id,))
+        books = cursor.fetchall()
+        return [Book(*row) for row in books]
+
+
+
+def delete_books_by_author_id(id: int):
+    with sqlite3.connect('table_books.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute(f"""
+        DELETE table_authors
+        WHERE id = '%d'""" % id)
+        conn.commit()
