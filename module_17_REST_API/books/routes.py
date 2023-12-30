@@ -1,3 +1,7 @@
+from apispec_webframeworks.flask import FlaskPlugin
+from apispec.ext.marshmallow import MarshmallowPlugin
+
+from flasgger import APISpec, Swagger
 from dataclasses import asdict
 
 from flask_restful import Api, Resource
@@ -17,11 +21,58 @@ from schemas import BookSchema, ValidationError, AuthorSchema
 app = Flask(__name__)
 api = Api(app)
 
+spec = APISpec(
+    title='BookList',
+    version='1.0.0',
+    openapi_version='2.0',
+    plugins=[
+        FlaskPlugin(),
+        MarshmallowPlugin(),
+    ]
+)
+
 class BookList(Resource):
     def get(self):
+        """
+       This is an endpoint for obtaining the books list.
+       ---
+       tags:
+         - books
+       responses:
+          200:
+            description: A list of books
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/Book'
+       """
         return {'data': [asdict(book) for book in get_all_books()]}, 200
 
     def post(self):
+        """
+           This is an endpoint for adding new book.
+           ---
+           tags:
+             - books
+           parameters:
+             - in: body
+               name: new book params
+               schema:
+                 $ref: '#/definitions/Book'
+           responses:
+              201:
+                description: the book was created
+                schema:
+                  $ref: '#/definitions/Book'
+                example: 'The book was created!'
+              400:
+                description: Bad request
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+           """
         data = request.json
 
         schema = BookSchema()
@@ -87,6 +138,12 @@ class Authors(Resource):
         delete_books_by_author_id(id)
         return {'msg': "ok"}, 200
 
+template = spec.to_flasgger(
+    app,
+    definitions=[BookSchema],
+)
+
+swagger = Swagger(app, template=template)
 
 api.add_resource(BookList, '/api/books/')
 api.add_resource(Book, '/api/books/<int:id>')
