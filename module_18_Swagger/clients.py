@@ -18,3 +18,17 @@ class BookClient:
             return response.json()
         else:
             raise ValueError('Wrong params. Response message: {}'.format(response.json()))
+
+    def update_book(self, id: int, data):
+        response = self._session.put(f"{self.URL}{id}", json=data, timeout=self.TIMEOUT)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise ValueError('Wrong params. Response message: {}'.format(response.json()))
+
+    def delete_book(self, id: int):
+        response = self._session.delete(f"{self.URL}{id}", timeout=self.TIMEOUT)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise ValueError('Wrong params. Response message: {}'.format(response.json()))
