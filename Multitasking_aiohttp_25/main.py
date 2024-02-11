@@ -15,10 +15,12 @@ async def get_cat(client: aiohttp.ClientSession, idx: int) -> bytes:
         result = await response.read()
         await write_to_disc(result, idx)
 
+
 async def write_to_disc(content: bytes, id: int):
     file_path = "{}/{}.png".format(OUT_PATH, id)
     async with aiofiles.open(file_path, mode='wb') as f:
         await f.write(content)
+
 async def get_all_cats():
 
     async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(15)) as client:
