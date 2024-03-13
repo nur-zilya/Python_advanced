@@ -13,7 +13,7 @@ def hello():
 def add_cors(response: Response):
     response.headers['Access-Control-Allow-Origin'] = 'https://www.google.com'
     response.headers['Access-Control-Allow-Headers'] = 'X-My-Fancy-Header'
-    response.headers['Access-Control-Allow-Methods'] = 'GET', 'POST'
+    response.headers['Access-Control-Allow-Methods'] = ['GET', 'POST']
     return response
 
 if __name__ == "__main__":

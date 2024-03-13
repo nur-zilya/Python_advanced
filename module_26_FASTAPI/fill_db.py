@@ -30,16 +30,17 @@ async def main():
         "name": "chicken carry",
         "time_cook": time_obj,
         "ingredients": "chicken, carry, rice",
-        "receipt_text": "mix all ingredients"
+        "receipt_text": "mix all ingredients",
     }
 
     receipt_data = {
         "name": meal_data["name"],
         "time_cook": meal_data["time_cook"],
-        "views": 0
+        "views": 0,
     }
 
     created_meal = await create_meal_with_receipt(meal_data, receipt_data)
     print(created_meal)
+
 
 asyncio.run(main())

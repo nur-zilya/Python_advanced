@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from datetime import time
 
+
 class BaseMeal(BaseModel):
     name: str
     time_cook: time
@@ -15,5 +16,3 @@ class BaseReceipt(BaseModel):
 
     class Config:
         orm_mode = True
-
-
