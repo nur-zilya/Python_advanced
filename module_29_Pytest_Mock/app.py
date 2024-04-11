@@ -5,29 +5,30 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import jsonify, request
 from wtforms import Form, StringField, validators
 
+
 db = SQLAlchemy()
 
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     if test_config is None:
-        # load the instance config, if it exists, when not testing
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///parking.db'
         app.config.from_pyfile('config.py', silent=True)
     else:
-        # load the test config if passed in
         app.config.from_mapping(test_config)
 
-        # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
     except OSError:
         pass
 
     db.init_app(app)
+
     return app
+
+
+app = create_app()
 
 
 class Client(db.Model):
@@ -56,7 +57,6 @@ class ClientParking(db.Model):
     client = db.relationship('Client', backref=db.backref('parkings'))
     parking = db.relationship('Parking', backref=db.backref('clients'))
 
-
 class ClientForm(Form):
     name = StringField('Name', validators=[validators.InputRequired(), validators.Length(max=50)])
     surname = StringField('Surname', validators=[validators.InputRequired(), validators.Length(max=50)])
@@ -64,8 +64,9 @@ class ClientForm(Form):
     car_number = StringField('Car Number', validators=[validators.InputRequired(), validators.Length(max=10)])
 
 
-app = create_app()
-
+@app.route('/client', methods=['GET'])
+def hi():
+    return "Hi"
 
 @app.route('/clients', methods=['GET'])
 def return_clients_list():
@@ -105,20 +106,27 @@ def return_client(id):
 
 @app.route('/clients', methods=['POST'])
 def create_client():
-    form = ClientForm(request.form)
+    # Parse JSON data from request
+    data = request.json
 
+    # Validate form data
+    form = ClientForm(data=data)
     if form.validate():
-        name = form.name.data
-        surname = form.surname.data
-        credit_card = form.credit_card.data
-        car_number = form.car_number.data
+        # Extract data from form
+        name = data.get('name')
+        surname = data.get('surname')
+        credit_card = data.get('credit_card')
+        car_number = data.get('car_number')
 
+        # Create new client
         new_client = Client(name=name, surname=surname, credit_card=credit_card, car_number=car_number)
         db.session.add(new_client)
         db.session.commit()
 
+        # Return success response
         return jsonify({'message': 'Client created successfully'}), 201
     else:
+        # Return validation error response
         return jsonify({'error': 'Validation failed', 'errors': form.errors}), 400
 
 
@@ -172,5 +180,6 @@ def delete_parking(client_id, parking_id):
 
 if __name__ == '__main__':
     app = create_app()
+    app.run()
 
 
