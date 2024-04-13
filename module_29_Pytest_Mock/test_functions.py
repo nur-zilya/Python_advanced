@@ -21,3 +21,8 @@ def test_sqrt():
 
 def test_item_in_list():
     assert 777 in [item for item in [111, 222, 777, 555]]
+
+
+@pytest.mark.parametrize("degree, result", [(25, 5), (36, 6), (49, 7)])
+def test_math_sqrt(degree, result):
+    assert math.sqrt(degree) == result
